@@ -6,7 +6,6 @@ class API:
         self.USERNAME = USERNAME
         self.PASSWORD = PASSWORD
         self.REFRESH_TOKEN = REFRESH_TOKEN
-        self.headers={'Content-Type': 'application/x-www-form-urlencoded'}
     
     def login(self, ttl=4):
         data = {"Content-Type":"application/x-www-form-urlencoded","client_id":"ANDR","grant_type":"password","username":self.USERNAME,"password":self.PASSWORD}
@@ -14,8 +13,7 @@ class API:
         if not(response.ok) and ttl:
             self.login(ttl=ttl-1)
         elif not(ttl):
-            print("login failed")
-            raise LoginError(response)
+            response.raise_for_status()
         else:       
             response_json = json.loads(response.content.decode("UTF-8"))
             self.ACCESS_TOKEN = response_json["access_token"]
@@ -27,8 +25,7 @@ class API:
         if not(response.ok) and ttl:
             self.refresh(ttl=ttl-1)
         elif not(ttl):
-            print("refresh failed")
-            raise LoginError(response)
+            response.raise_for_status()
         else:       
             response_json = json.loads(response.content.decode("UTF-8"))
             self.ACCESS_TOKEN = response_json["access_token"]
@@ -39,12 +36,14 @@ class API:
             date = str(datetime.date.today())
         headers = {"Content-Type":"application/x-www-form-urlencoded", "Authorization": f"Bearer {self.ACCESS_TOKEN}"}
         response = requests.get(os.path.join(self.SCHOOL_URL, f"api/3/timetable/actual?date={date}"), headers=headers)
+        response.raise_for_status()
         response_json = json.loads(response.content.decode("UTF-8"))
         return response_json
     
     def get_permanent(self):
         headers = {"Content-Type":"application/x-www-form-urlencoded", "Authorization": f"Bearer {self.ACCESS_TOKEN}"}
         response = requests.get(os.path.join(self.SCHOOL_URL, "api/3/timetable/permanent"), headers=headers)
+        response.raise_for_status()
         response_json = json.loads(response.content.decode("UTF-8"))
         return response_json
     
@@ -58,35 +57,20 @@ class API:
     def get_marks(self):
         headers = {"Content-Type":"application/x-www-form-urlencoded", "Authorization": f"Bearer {self.ACCESS_TOKEN}"}
         response = requests.get(os.path.join(self.SCHOOL_URL, "api/3/marks"), headers=headers)
+        response.raise_for_status()
         response_json = json.loads(response.content.decode("UTF-8"))
         return response_json
     
-
-
-
+    def get_homeworks(self):
+        headers = {"Content-Type":"application/x-www-form-urlencoded", "Authorization": f"Bearer {self.ACCESS_TOKEN}"}
+        response = requests.get(os.path.join(self.SCHOOL_URL, "api/3/homeworks"), headers=headers)
+        response.raise_for_status()
+        response_json = json.loads(response.content.decode("UTF-8"))
+        return response_json
     
-
-        
-
-
-class LoginError(Exception):
-    """
-    could not login after 4 tries
-
-    attributes:
-        response
-    """
-    def __init__(self, response):
-        self.message = json.loads(response.content.decode("UTF-8"))["error_description"]
-        super().__init__(self.message)
-
-class FetchError(Exception):
-    """
-    could not sucessfully fetch data from the server
-
-    attributes:
-        response
-    """
-    def __init__(self, response):
-        self.message = json.loads(response.content.decode("UTF-8"))["error_description"]
-        super.__init__(self.message)
+    def get_subjects(self):
+        headers = {"Content-Type":"application/x-www-form-urlencoded", "Authorization": f"Bearer {self.ACCESS_TOKEN}"}
+        response = requests.get(os.path.join(self.SCHOOL_URL, "api/3/subjects"), headers=headers)
+        response.raise_for_status()
+        response_json = json.loads(response.content.decode("UTF-8"))
+        return response_json
