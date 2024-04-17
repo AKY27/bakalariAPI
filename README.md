@@ -6,3 +6,6 @@ Add `.env` file containing your `USERNAME`, `PASSWORD`, `SCHOOL_URL` and time `O
 
 I also recomend using venv.
 
+---
+
+This API was created thanks to [bakalari api documentation](https://github.com/bakalari-api/bakalari-api-v3) on github.
