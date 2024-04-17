@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rozvrh</title>
+<style>
+    #table {
+      width: 1000px;
+      height: 500px;
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+    #table td {
+      width: 1%;
+      height: 1%;
+      padding: 5px;
+      border: 2px solid white;
+      background-color: #005959; 
+    }
+    #table tr {
+        border: 2px solid #5F5F5F;
+        background-color: #000000;
+        color: #005959;
+    }
+    #par {
+        line-height: 5px;
+        color: #1bff80;
+    }
+    .background-image {
+      background-image: url('/bg_img.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="background-image">
+
+<div id="tableContainer"></div>
+
+<script src="/main.js"></script>
+
+</body>
+</html>
